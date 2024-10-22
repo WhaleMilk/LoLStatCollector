@@ -3,6 +3,8 @@ package main
 import (
 	//"fmt"
 	"encoding/json"
+	"fmt"
+
 	//"net/http"
 	"os"
 
@@ -16,10 +18,12 @@ func check(e error) {
 }
 
 func main() {
-	var start_info handlers.StartData
-	content, e := os.ReadFile("/assets/start_info.json")
+	start_info := handlers.StartData{}
+	content, e := os.ReadFile("F:/Skillcapped/Code/LoLStatsCollector/assets/start_info.json")
 	check(e)
-	err := json.Unmarshal(content, &start_info)
-	check(err)
+	json.Unmarshal(content, &start_info)
 
+	matches := handlers.GetRecentGames(start_info)
+
+	fmt.Println(handlers.GetGameData(matches[0], start_info))
 }
