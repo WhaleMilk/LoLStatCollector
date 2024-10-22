@@ -72,6 +72,19 @@ func GetPlayers(PUUID string, match dataobjects.Match) (me dataobjects.Participa
 	return match.Info.Participants[index], match.Info.Participants[(index+5)%9]
 }
 
+func GetGameTimeline(game_id string, start_data StartData) (match_timeline dataobjects.Timeline) {
+	var timeline dataobjects.Timeline
+
+	resp, err := http.Get(fmt.Sprint("https://americas.api.riotgames.com/lol/match/v5/matches/", game_id, "/timeline?api_key=", start_data.ApiKey))
+	check(err)
+
+	body, err := io.ReadAll(resp.Body)
+	check(err)
+
+	json.Unmarshal(body, &timeline)
+	return timeline
+}
+
 func GetEpochTimes(date string) (string, error) {
 	parsedDate, err := time.Parse("2006-01-02", date)
 	if err != nil {
@@ -82,5 +95,4 @@ func GetEpochTimes(date string) (string, error) {
 	endOfDay := time.Date(parsedDate.Year(), parsedDate.Month(), parsedDate.Day(), 23, 59, 59, 0, parsedDate.Location())
 
 	return fmt.Sprint("?startTime=", startOfDay.Unix(), "&endTime=", endOfDay.Unix()), nil
-	// return startOfDay.Unix(), endOfDay.Unix(), nil
 }
