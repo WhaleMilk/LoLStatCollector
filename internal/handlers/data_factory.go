@@ -22,6 +22,23 @@ func findGD15(data Data) (gd15 int) {
 	return player1_frame - player2_frame
 }
 
+func findPlayersKP(match dataobjects.Match, p_index1 int) (player1gold float32) {
+
+	participants := match.Info.Participants
+	teamKills := 0
+	if p_index1 < 5 {
+		for i := 0; i < 5; i++ {
+			teamKills = teamKills + participants[i].Kills
+		}
+	} else {
+		for i := 5; i < 10; i++ {
+			teamKills = teamKills + participants[i].Kills
+		}
+	}
+
+	return (float32(participants[p_index1].Kills) / float32(teamKills)) * 100.0
+}
+
 func findPlayersGoldInFrame(frame dataobjects.Frame, p_index1 int) (player1gold int, player2gold int) {
 
 	var frame_map = map[int]int{
@@ -72,21 +89,4 @@ func findPlayersDPMInFrame(frame dataobjects.Frame, p_index1 int) (player1gold f
 		9: frame.ParticipantFrames.Num10.DamageStats.TotalDamageDoneToChampions}
 
 	return float32(frame_map[p_index1]) / 15.0
-}
-
-func findPlayersKP(match dataobjects.Match, p_index1 int) (player1gold float32) {
-
-	participants := match.Info.Participants
-	teamKills := 0
-	if p_index1 < 5 {
-		for i := 0; i < 5; i++ {
-			teamKills = teamKills + participants[i].Kills
-		}
-	} else {
-		for i := 5; i < 10; i++ {
-			teamKills = teamKills + participants[i].Kills
-		}
-	}
-
-	return (float32(participants[p_index1].Kills) / float32(teamKills)) * 100.0
 }
