@@ -4,7 +4,7 @@ import (
 	"github.com/WhaleMilk/LoLStatCollector/internal/dataobjects"
 )
 
-func findGD15(data Data) (gd15 int) {
+func findPlayerIndex(data Data) (index int) {
 	index1 := -1
 	for i, player := range data.MatchTimeline.Participants {
 		if player.Puuid == data.Me.Puuid {
@@ -17,14 +17,20 @@ func findGD15(data Data) (gd15 int) {
 		}
 	}
 
+	return index1
+}
+
+func findGD15(data Data) (gd15 int) {
+	index1 := findPlayerIndex(data)
+
 	player1_frame, player2_frame := findPlayersGoldInFrame(data.MatchTimeline.Info.Frames[15], index1)
 
 	return player1_frame - player2_frame
 }
 
-func findPlayersKP(match dataobjects.Match, p_index1 int) (player1gold float32) {
-
-	participants := match.Info.Participants
+func findPlayersKP(data Data) (player1gold float32) {
+	p_index1 := findPlayerIndex(data)
+	participants := data.Match.Info.Participants
 	teamKills := 0
 	if p_index1 < 5 {
 		for i := 0; i < 5; i++ {
@@ -37,6 +43,22 @@ func findPlayersKP(match dataobjects.Match, p_index1 int) (player1gold float32) 
 	}
 
 	return (float32(participants[p_index1].Kills) / float32(teamKills)) * 100.0
+}
+
+func findPlayerCSM(data Data) (CSM float32) {
+	index := findPlayerIndex(data)
+
+	cs := findPlayersCSInFrame(data.MatchTimeline.Info.Frames[15], index)
+
+	return cs
+}
+
+func findPlayerDPM(data Data) (dpm float32) {
+	index := findPlayerIndex(data)
+
+	damage := findPlayersDPMInFrame(data.MatchTimeline.Info.Frames[15], index)
+
+	return damage
 }
 
 func findPlayersGoldInFrame(frame dataobjects.Frame, p_index1 int) (player1gold int, player2gold int) {

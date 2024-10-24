@@ -14,9 +14,9 @@ type Data struct {
 type FinalData struct {
 	GD15     int
 	CSM      float32
-	DPM      int
+	DPM      float32
 	KP       float32
-	WinRate  float32
+	WinRate  float32 //match.participants.{partic}.teamID, blue side = 100, red side = 200, find match.info.teams for win
 	Total_LP int
 	LP_Delta int
 }
@@ -28,9 +28,9 @@ func runAnalysis(data Data) (out FinalData) {
 
 	var final_game_data FinalData = FinalData{
 		findGD15(data),
-		0.0,
-		1,
-		0.0,
+		findPlayerCSM(data),
+		findPlayerDPM(data),
+		findPlayersKP(data),
 		0.0,
 		1,
 		1}
