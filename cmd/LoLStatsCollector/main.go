@@ -25,19 +25,8 @@ func main() {
 
 	matches := handlers.GetRecentGames(start_info)
 	//runForEachGame(matches, start_info)
-	handlers.RunAnalysis(matches, start_info)
+	ProcessedGames := handlers.RunAnalysis(matches, start_info)
+	MostRecentData := handlers.GetCSVData("F:/Skillcapped/Code/LoLStatsCollector/assets/processed_data.csv")
 
 	fmt.Println(handlers.GetGameData(matches[0], start_info))
 }
-
-// func runForEachGame(games []string, start_info handlers.StartData) (out FinalData) {
-// 	data := handlers.Data{}
-// 	for _, match := range games {
-// 		data.Match = handlers.GetGameData(match, start_info)
-// 		data.MatchTimeline = handlers.GetGameTimeline(match, start_info)
-// 		data.Me, data.Opponent = handlers.GetPlayers(start_info.PUUID, data.Match)
-// 		//handlers.runAnalysis(data)
-// 	}
-
-// 	return
-// }

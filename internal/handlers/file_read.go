@@ -20,6 +20,15 @@ type CSVAverages struct {
 	LP_Delta    int
 }
 
+func GetCSVData(filename string) CSVAverages {
+	datastream := readCSVData(filename)
+	reader, err := parseCSV(datastream)
+	check(err)
+
+	MostRecentData := processCSVData(reader)
+	return MostRecentData
+}
+
 func readCSVData(filename string) []byte {
 	f, err := os.Open(filename)
 	check(err)
@@ -50,10 +59,10 @@ func populateAverages(data []string) CSVAverages {
 		[2]int{int(getPairVal(strconv.ParseInt(data[0], 10, 64))), int(getPairVal(strconv.ParseInt(data[1], 10, 64)))},
 		[2]int{int(getPairVal(strconv.ParseInt(data[3], 10, 64))), int(getPairVal(strconv.ParseInt(data[4], 10, 64)))},
 		[2]int{int(getPairVal(strconv.ParseInt(data[5], 10, 64))), int(getPairVal(strconv.ParseInt(data[6], 10, 64)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[7], 10))), float32(getPairValFloat(strconv.ParseFloat(data[8], 10)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[9], 10))), float32(getPairValFloat(strconv.ParseFloat(data[10], 10)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[11], 10))), float32(getPairValFloat(strconv.ParseFloat(data[12], 10)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[13], 10))), float32(getPairValFloat(strconv.ParseFloat(data[14], 10)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[7], 32))), float32(getPairValFloat(strconv.ParseFloat(data[8], 32)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[9], 32))), float32(getPairValFloat(strconv.ParseFloat(data[10], 32)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[11], 32))), float32(getPairValFloat(strconv.ParseFloat(data[12], 32)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[13], 32))), float32(getPairValFloat(strconv.ParseFloat(data[14], 32)))},
 		int(getPairVal(strconv.ParseInt(data[15], 10, 64))),
 		int(getPairVal(strconv.ParseInt(data[16], 10, 64)))}
 
