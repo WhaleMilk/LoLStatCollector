@@ -1,11 +1,8 @@
 package main
 
 import (
-	//"fmt"
 	"encoding/json"
 	"fmt"
-
-	//"net/http"
 	"os"
 
 	"github.com/WhaleMilk/LoLStatCollector/internal/handlers"
@@ -24,9 +21,15 @@ func main() {
 	json.Unmarshal(content, &start_info)
 
 	matches := handlers.GetRecentGames(start_info)
-	//runForEachGame(matches, start_info)
 	ProcessedGames := handlers.RunAnalysis(matches, start_info)
 	MostRecentData := handlers.GetCSVData("F:/Skillcapped/Code/LoLStatsCollector/assets/processed_data.csv")
 
 	fmt.Println(handlers.GetGameData(matches[0], start_info))
+	//testWrite()
+}
+
+func testWrite() {
+	fileloction := "C:/Users/rtacb/Desktop/Files/Programming/LoLStatsCollector/LoLStatCollector/assets/processed_data.csv"
+	dt := []string{"1", "2", "3", "4"}
+	handlers.WriteNewLine(fileloction, dt)
 }
