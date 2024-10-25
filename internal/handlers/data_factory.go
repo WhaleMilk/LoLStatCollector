@@ -61,6 +61,18 @@ func findPlayerDPM(data Data) (dpm float32) {
 	return damage
 }
 
+func findPlayerPos(player dataobjects.Participant) string {
+	return player.IndividualPosition
+}
+
+func findPlayerWinLoss(data Data) bool {
+	team := data.Me.TeamID
+	if data.Match.Info.Teams[0].TeamID == team {
+		return data.Match.Info.Teams[0].Win
+	}
+	return data.Match.Info.Teams[1].Win
+}
+
 func findPlayersGoldInFrame(frame dataobjects.Frame, p_index1 int) (player1gold int, player2gold int) {
 
 	var frame_map = map[int]int{

@@ -37,21 +37,25 @@ func parseCSV(data []byte) (*csv.Reader, error) {
 }
 
 func processCSVData(reader *csv.Reader) CSVAverages {
-	//find last row of data with total games played in each position
-	//populate with that info into CSVAverages
 	file_data, err := reader.ReadAll()
 	check(err)
 
 	last_line := file_data[len(file_data)-1]
-
+	return populateAverages(last_line)
 }
 
 func populateAverages(data []string) CSVAverages {
-	gamespair := [2]int64{getPairVal(strconv.ParseInt(data[0], 10, 64)), getPairVal(strconv.ParseInt(data[1], 10, 64))}
-	wonpair := [2]int64{getPairVal(strconv.ParseInt(data[3], 10, 64)), getPairVal(strconv.ParseInt(data[4], 10, 64))}
-	gdpair := [2]int64{getPairVal(strconv.ParseInt(data[5], 10, 64)), getPairVal(strconv.ParseInt(data[6], 10, 64))}
-	cspair := [2]float32{getPairValFloat(strconv.ParseFloat(data[0], 10, 64)), getPairVal(strconv.Float(data[1], 10, 64))}
-	var averages CSVAverages = CSVAverages{}
+
+	var averages CSVAverages = CSVAverages{
+		[2]int{int(getPairVal(strconv.ParseInt(data[0], 10, 64))), int(getPairVal(strconv.ParseInt(data[1], 10, 64)))},
+		[2]int{int(getPairVal(strconv.ParseInt(data[3], 10, 64))), int(getPairVal(strconv.ParseInt(data[4], 10, 64)))},
+		[2]int{int(getPairVal(strconv.ParseInt(data[5], 10, 64))), int(getPairVal(strconv.ParseInt(data[6], 10, 64)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[7], 10))), float32(getPairValFloat(strconv.ParseFloat(data[8], 10)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[9], 10))), float32(getPairValFloat(strconv.ParseFloat(data[10], 10)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[11], 10))), float32(getPairValFloat(strconv.ParseFloat(data[12], 10)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[13], 10))), float32(getPairValFloat(strconv.ParseFloat(data[14], 10)))},
+		int(getPairVal(strconv.ParseInt(data[15], 10, 64))),
+		int(getPairVal(strconv.ParseInt(data[16], 10, 64)))}
 
 	return averages
 }
@@ -61,7 +65,7 @@ func getPairVal(i int64, err error) (out int64) {
 	return i
 }
 
-func getPairValFloat(f float32, err error) (out float32) {
+func getPairValFloat(f float64, err error) (out float64) {
 	check(err)
 	return f
 }
