@@ -14,9 +14,10 @@ import (
 )
 
 type StartData struct {
-	ApiKey string `json:"apiKey"`
-	PUUID  string `json:"PUUID"`
-	Date   string `json:"date"`
+	ApiKey     string `json:"apiKey"`
+	PUUID      string `json:"PUUID"`
+	Date       string `json:"date"`
+	SummonerID string `json:"summonerID"`
 }
 
 type GamesPlayed struct {
@@ -85,6 +86,33 @@ func GetGameTimeline(game_id string, start_data StartData) (match_timeline datao
 	return timeline
 }
 
+func GetRankedData(summonerID string, APIkey string) (totalLP int) {
+	var ranked dataobjects.RankedData
+
+	resp, err := http.Get(fmt.Sprint("https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/", summonerID, "/?api_key=", APIkey))
+	check(err)
+
+	body, err := io.ReadAll(resp.Body)
+	check(err)
+
+	json.Unmarshal(body, &ranked)
+	return convertLP(ranked)
+}
+
+func convertLP(ranked dataobjects.RankedData) (totalLP int) {
+	var rankConversion = map[string]int{
+		"IV":     0,
+		"III":    100,
+		"II":     200,
+		"I":      300,
+		"IRON":   0,
+		"BRONZE": 400,
+		"SILVER": 800,
+		"GOLD":   1200}
+
+	return rankConversion[ranked[0].Rank] + rankConversion[ranked[0].Tier] + ranked[0].LeaguePoints
+}
+
 func GetEpochTimes(date string) (string, error) {
 	parsedDate, err := time.Parse("2006-01-02", date)
 	if err != nil {
@@ -94,5 +122,5 @@ func GetEpochTimes(date string) (string, error) {
 	startOfDay := time.Date(parsedDate.Year(), parsedDate.Month(), parsedDate.Day(), 0, 0, 0, 0, parsedDate.Location())
 	endOfDay := time.Date(parsedDate.Year(), parsedDate.Month(), parsedDate.Day(), 23, 59, 59, 0, parsedDate.Location())
 
-	return fmt.Sprint("?startTime=", startOfDay.Unix(), "&endTime=", endOfDay.Unix()), nil
+	return fmt.Sprint("?startTime=", startOfDay.Unix()+21600, "&endTime=", endOfDay.Unix()+21600), nil
 }

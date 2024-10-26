@@ -6,7 +6,7 @@ import (
 
 func findPlayerIndex(data Data) (index int) {
 	index1 := -1
-	for i, player := range data.MatchTimeline.Participants {
+	for i, player := range data.Match.Info.Participants {
 		if player.Puuid == data.Me.Puuid {
 			index1 = i
 			break
@@ -42,7 +42,7 @@ func findPlayersKP(data Data) (player1gold float32) {
 		}
 	}
 
-	return (float32(participants[p_index1].Kills) / float32(teamKills)) * 100.0
+	return (float32(participants[p_index1].Kills+participants[p_index1].Assists) / float32(teamKills)) * 100.0
 }
 
 func findPlayerCSM(data Data) (CSM float32) {
@@ -94,16 +94,16 @@ func findPlayersGoldInFrame(frame dataobjects.Frame, p_index1 int) (player1gold 
 func findPlayersCSInFrame(frame dataobjects.Frame, p_index1 int) (player1gold float32) {
 
 	var frame_map = map[int]int{
-		0: frame.ParticipantFrames.Num1.MinionsKilled,
-		1: frame.ParticipantFrames.Num2.MinionsKilled,
-		2: frame.ParticipantFrames.Num3.MinionsKilled,
-		3: frame.ParticipantFrames.Num4.MinionsKilled,
-		4: frame.ParticipantFrames.Num5.MinionsKilled,
-		5: frame.ParticipantFrames.Num6.MinionsKilled,
-		6: frame.ParticipantFrames.Num7.MinionsKilled,
-		7: frame.ParticipantFrames.Num8.MinionsKilled,
-		8: frame.ParticipantFrames.Num9.MinionsKilled,
-		9: frame.ParticipantFrames.Num10.MinionsKilled}
+		0: frame.ParticipantFrames.Num1.MinionsKilled + frame.ParticipantFrames.Num1.JungleMinionsKilled,
+		1: frame.ParticipantFrames.Num2.MinionsKilled + frame.ParticipantFrames.Num2.JungleMinionsKilled,
+		2: frame.ParticipantFrames.Num3.MinionsKilled + frame.ParticipantFrames.Num3.JungleMinionsKilled,
+		3: frame.ParticipantFrames.Num4.MinionsKilled + frame.ParticipantFrames.Num4.JungleMinionsKilled,
+		4: frame.ParticipantFrames.Num5.MinionsKilled + frame.ParticipantFrames.Num5.JungleMinionsKilled,
+		5: frame.ParticipantFrames.Num6.MinionsKilled + frame.ParticipantFrames.Num6.JungleMinionsKilled,
+		6: frame.ParticipantFrames.Num7.MinionsKilled + frame.ParticipantFrames.Num7.JungleMinionsKilled,
+		7: frame.ParticipantFrames.Num8.MinionsKilled + frame.ParticipantFrames.Num8.JungleMinionsKilled,
+		8: frame.ParticipantFrames.Num9.MinionsKilled + frame.ParticipantFrames.Num9.JungleMinionsKilled,
+		9: frame.ParticipantFrames.Num10.MinionsKilled + frame.ParticipantFrames.Num10.JungleMinionsKilled}
 
 	return float32(frame_map[p_index1]) / 15.0
 }

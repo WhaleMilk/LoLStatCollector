@@ -57,14 +57,14 @@ func populateAverages(data []string) CSVAverages {
 
 	var averages CSVAverages = CSVAverages{
 		[2]int{int(getPairVal(strconv.ParseInt(data[0], 10, 64))), int(getPairVal(strconv.ParseInt(data[1], 10, 64)))},
-		[2]int{int(getPairVal(strconv.ParseInt(data[3], 10, 64))), int(getPairVal(strconv.ParseInt(data[4], 10, 64)))},
-		[2]int{int(getPairVal(strconv.ParseInt(data[5], 10, 64))), int(getPairVal(strconv.ParseInt(data[6], 10, 64)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[7], 32))), float32(getPairValFloat(strconv.ParseFloat(data[8], 32)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[9], 32))), float32(getPairValFloat(strconv.ParseFloat(data[10], 32)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[11], 32))), float32(getPairValFloat(strconv.ParseFloat(data[12], 32)))},
-		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[13], 32))), float32(getPairValFloat(strconv.ParseFloat(data[14], 32)))},
-		int(getPairVal(strconv.ParseInt(data[15], 10, 64))),
-		int(getPairVal(strconv.ParseInt(data[16], 10, 64)))}
+		[2]int{int(getPairVal(strconv.ParseInt(data[2], 10, 64))), int(getPairVal(strconv.ParseInt(data[3], 10, 64)))},
+		[2]int{int(getPairVal(strconv.ParseInt(data[4], 10, 64))), int(getPairVal(strconv.ParseInt(data[5], 10, 64)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[6], 32))), float32(getPairValFloat(strconv.ParseFloat(data[7], 32)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[8], 32))), float32(getPairValFloat(strconv.ParseFloat(data[9], 32)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[10], 32))), float32(getPairValFloat(strconv.ParseFloat(data[11], 32)))},
+		[2]float32{float32(getPairValFloat(strconv.ParseFloat(data[12], 32))), float32(getPairValFloat(strconv.ParseFloat(data[13], 32)))},
+		int(getPairVal(strconv.ParseInt(data[14], 10, 64))),
+		int(getPairVal(strconv.ParseInt(data[15], 10, 64)))}
 
 	return averages
 }

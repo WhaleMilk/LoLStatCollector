@@ -27,6 +27,9 @@ func RunAnalysis(games []string, start_info StartData) (out []GameSetData) {
 	for _, match := range games {
 		data.Match = GetGameData(match, start_info)
 		data.MatchTimeline = GetGameTimeline(match, start_info)
+		if len(data.MatchTimeline.Info.Frames) < 15 {
+			continue
+		}
 		data.Me, data.Opponent = GetPlayers(start_info.PUUID, data.Match)
 		game_sets = append(game_sets, runForEachGame(data))
 	}
