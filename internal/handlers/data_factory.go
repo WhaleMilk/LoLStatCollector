@@ -47,10 +47,11 @@ func findPlayersKP(data Data) (player1gold float32) {
 
 func findPlayerCSM(data Data) (CSM float32) {
 	index := findPlayerIndex(data)
+	frame_count := len(data.MatchTimeline.Info.Frames)
 
-	cs := findPlayersCSInFrame(data.MatchTimeline.Info.Frames[15], index)
+	cs := findPlayersCSInFrame(data.MatchTimeline.Info.Frames[frame_count-1], index)
 
-	return cs
+	return cs / float32(frame_count)
 }
 
 func findPlayerDPM(data Data) (dpm float32) {
@@ -105,7 +106,7 @@ func findPlayersCSInFrame(frame dataobjects.Frame, p_index1 int) (player1gold fl
 		8: frame.ParticipantFrames.Num9.MinionsKilled + frame.ParticipantFrames.Num9.JungleMinionsKilled,
 		9: frame.ParticipantFrames.Num10.MinionsKilled + frame.ParticipantFrames.Num10.JungleMinionsKilled}
 
-	return float32(frame_map[p_index1]) / 15.0
+	return float32(frame_map[p_index1])
 }
 
 func findPlayersDPMInFrame(frame dataobjects.Frame, p_index1 int) (player1gold float32) {
