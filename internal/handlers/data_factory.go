@@ -56,9 +56,9 @@ func findPlayerCSM(data Data) (CSM float32) {
 func findPlayerDPM(data Data) (dpm float32) {
 	index := findPlayerIndex(data)
 
-	damage := findPlayersDPMInFrame(data.MatchTimeline.Info.Frames[15], index)
+	damage := findPlayersDPMInFrame(data.MatchTimeline.Info.Frames[len(data.MatchTimeline.Info.Frames)-1], index)
 
-	return damage
+	return damage / float32(len(data.MatchTimeline.Info.Frames))
 }
 
 func findPlayerPos(player dataobjects.Participant) string {
@@ -122,5 +122,5 @@ func findPlayersDPMInFrame(frame dataobjects.Frame, p_index1 int) (player1gold f
 		8: frame.ParticipantFrames.Num9.DamageStats.TotalDamageDoneToChampions,
 		9: frame.ParticipantFrames.Num10.DamageStats.TotalDamageDoneToChampions}
 
-	return float32(frame_map[p_index1]) / 15.0
+	return float32(frame_map[p_index1])
 }
