@@ -49,6 +49,7 @@ func GetRecentGames(start_data StartData) (games []string) {
 }
 
 func GetGameData(game_id string, start_data StartData) (match_data dataobjects.Match) {
+	print("Collecting data for gaame " + game_id)
 	var match dataobjects.Match
 
 	resp, err := http.Get(fmt.Sprint("https://americas.api.riotgames.com/lol/match/v5/matches/", game_id, "?api_key=", start_data.ApiKey))

@@ -26,9 +26,3 @@ func main() {
 	newLine := handlers.CalcNewLine(ProcessedGames, MostRecentData, start_info)
 	handlers.WriteNewLine("F:/Skillcapped/Code/LoLStatsCollector/assets/processed_data.csv", newLine)
 }
-
-// func testWrite() {
-// 	fileloction := "C:/Users/rtacb/Desktop/Files/Programming/LoLStatsCollector/LoLStatCollector/assets/processed_data.csv"
-// 	dt := []string{"1", "2", "3", "4"}
-// 	handlers.WriteNewLine(fileloction, dt)
-// }

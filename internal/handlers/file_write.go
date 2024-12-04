@@ -9,6 +9,7 @@ import (
 func CalcNewLine(games []GameSetData, lastLine CSVAverages, start StartData) []string {
 	var games_count [2]uint8
 	var pos uint8
+	var dayAv CSVAverages
 
 	for _, match := range games {
 		if match.Position == "JUNGLE" {
@@ -18,20 +19,25 @@ func CalcNewLine(games []GameSetData, lastLine CSVAverages, start StartData) []s
 		}
 
 		games_count[pos]++
-		lastLine.GD_15[pos] += match.GD15
-		lastLine.CSM[pos] += match.CSM
-		lastLine.DPM[pos] += match.DPM
-		lastLine.KP[pos] += match.KP
+		// lastLine.GD_15[pos] += match.GD15
+		// lastLine.CSM[pos] += match.CSM
+		// lastLine.DPM[pos] += match.DPM
+		// lastLine.KP[pos] += match.KP
+
+		dayAv.GD_15[pos] += match.GD15
+		dayAv.CSM[pos] += match.CSM
+		dayAv.DPM[pos] += match.DPM
+		dayAv.KP[pos] += match.KP
 
 		if match.WinLoss {
 			lastLine.GamesWon[pos]++
 		}
 	}
 
-	lastLine.GamesPlayed[0] += int(games_count[0])
-	lastLine.GamesPlayed[1] += int(games_count[1])
+	//lastLine.GamesPlayed[0] += int(games_count[0])
+	//lastLine.GamesPlayed[1] += int(games_count[1])
 
-	calcNewAverages(games_count, &lastLine)
+	calcNewAverages(games_count, &lastLine, dayAv)
 	calcNewWR(&lastLine)
 
 	currentLP := GetRankedData(start.SummonerID, start.ApiKey)
@@ -41,15 +47,26 @@ func CalcNewLine(games []GameSetData, lastLine CSVAverages, start StartData) []s
 	return convertToSlice(lastLine)
 }
 
-func calcNewAverages(games_count [2]uint8, lastLine *CSVAverages) {
+func calcNewAverages(games_count [2]uint8, lastLine *CSVAverages, dayAv CSVAverages) {
 	for i := 0; i < 2; i++ {
 		if games_count[i] != 0 {
-			lastLine.GD_15[i] /= int(games_count[i]) + 1
-			lastLine.CSM[i] /= float32(games_count[i]) + 1
-			lastLine.DPM[i] /= float32(games_count[i]) + 1
-			lastLine.KP[i] /= float32(games_count[i]) + 1
+			// lastLine.GD_15[i] /= int(games_count[i]) + 1
+			// lastLine.CSM[i] /= float32(games_count[i]) + 1
+			// lastLine.DPM[i] /= float32(games_count[i]) + 1
+			// lastLine.KP[i] /= float32(games_count[i]) + 1
+
+			dayAv.GD_15[i] /= int(games_count[i])
+			dayAv.CSM[i] /= float32(games_count[i])
+			dayAv.DPM[i] /= float32(games_count[i])
+			dayAv.KP[i] /= float32(games_count[i])
+
+			lastLine.GD_15[i] = (int(games_count[i]*uint8(dayAv.GD_15[i])) + int(lastLine.GamesPlayed[i]*lastLine.GD_15[i])) / (lastLine.GamesPlayed[i] + int(games_count[i]))
 		}
 	}
+}
+
+func calcWeighted(games_count [2]uint8, dayAvVal float32, lastLineVal float32, gamesCount int) {
+
 }
 
 func calcNewWR(lastLine *CSVAverages) {
